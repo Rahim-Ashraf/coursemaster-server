@@ -6,6 +6,6 @@ const auth = require('../../middleware/auth');
 
 router.post('/', auth, enrollmentController.enrollInCourse);
 
-router.get('/my-courses', auth, enrollmentController.getMyEnrolledCourses);
+router.get('/', auth, enrollmentController.getMyEnrolledCourses);
 
 module.exports = router;
