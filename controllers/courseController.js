@@ -28,7 +28,7 @@ exports.getCourses = async (req, res) => {
         }
 
         const startIndex = (page - 1) * limit;
-        const totalCourses = await Course.countDocuments();
+        const totalCourses = await Course.countDocuments(query);
 
         const courses = await Course.find(query)
             .sort(sortOrder)
