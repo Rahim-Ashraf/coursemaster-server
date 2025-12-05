@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/courses', require('./routes/api/courses'));
 app.use('/api/my-courses', require('./routes/api/enrollment'));
+app.use('/api/assignments', require('./routes/api/assignment'));
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
