@@ -36,6 +36,30 @@ exports.enrollInCourse = async (req, res) => {
         res.status(500).send('Server Error', err.message);
     }
 };
+exports.updateEnrolledCourse = async (req, res) => {
+    const { courseId } = req.body;
+    const userId = req.user.id;
+
+    try {
+
+        // Check if exists
+        const isExist = await Enrollment.findOne({ user: userId, course: courseId })
+        if (!isExist)
+            return res.status(404).json({ msg: 'Enrollment not found' });
+
+        const enrollment = await Enrollment.findOneAndUpdate(
+            { user: userId, course: courseId },
+            { progress: 1 },
+            { new: true }
+        );
+
+        res.json(enrollment);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error', err.message);
+    }
+};
 
 exports.getMyEnrolledCourses = async (req, res) => {
     const userId = req.user.id;
@@ -43,6 +67,19 @@ exports.getMyEnrolledCourses = async (req, res) => {
     try {
         const enrollments = await Enrollment.find({ user: userId }).populate('course')
         res.json(enrollments);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error', err.message)
+    }
+};
+exports.getMyEnrolledCourse = async (req, res) => {
+    const courseId = req.params.id;
+    const userId = req.user.id;
+
+    try {
+        const enrollment = await Enrollment.findOne({ user: userId, course: courseId }).populate('course')
+        res.json(enrollment);
 
     } catch (err) {
         console.error(err.message);
