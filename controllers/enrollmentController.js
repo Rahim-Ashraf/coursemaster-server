@@ -66,7 +66,24 @@ exports.getMyEnrolledCourses = async (req, res) => {
 
     try {
         const enrollments = await Enrollment.find({ user: userId }).populate('course')
-        res.json(enrollments);
+        const filterEnrollments = enrollments.filter(item => {
+            return item.course
+        })
+        res.json(filterEnrollments);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error', err.message)
+    }
+};
+exports.getEnrolledCourses = async (req, res) => {
+    const courseId = req.params.id
+    try {
+        const enrollments = await Enrollment.find({ course: courseId }).populate('user')
+        const filterEnrollments = enrollments.filter(item => {
+            return item.course
+        })
+        res.json(filterEnrollments);
 
     } catch (err) {
         console.error(err.message);
